@@ -20,7 +20,7 @@ const Index = () => {
   const [selectedDevice, setSelectedDevice] = useState('desktop');
 
   return (
-    <div className="mobile-full-height bg-gradient-background relative overflow-hidden">
+    <div className="mobile-full-height bg-gradient-background relative">
       {/* Background mesh overlay */}
       <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-mesh" />
       
@@ -33,8 +33,8 @@ const Index = () => {
                 <Zap className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="mobile-title text-foreground">RhishDesk</h1>
-                <p className="mobile-subtitle text-muted-foreground">Mobile Cloud Hub</p>
+                <p className="mobile-subtitle text-muted-foreground">Welcome Aboard!</p>
+                <h1 className="mobile-title text-foreground font-mono text-xl">Captain Rhishav</h1>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -93,7 +93,7 @@ const Index = () => {
                 className="flex flex-col items-center gap-1 px-1 py-2 rounded-xl text-xs touch-target"
               >
                 <MessageSquare className="h-4 w-4" />
-                <span className="text-[10px]">AI Chat</span>
+                <span className="text-[10px]">AI</span>
               </TabsTrigger>
             </TabsList>
           </div>
