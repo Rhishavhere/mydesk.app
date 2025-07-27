@@ -58,7 +58,7 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
         fetch(`https://myspace.rhishav.com/${device}/system/memory`).then(r => r.json()),
         fetch(`https://myspace.rhishav.com/${device}/system/disk`).then(r => r.json()),
         fetch(`https://myspace.rhishav.com/${device}/system/network`).then(r => r.json()),
-        fetch(`https://myspace.rhishav.com/${device}/system/processes?limit=20&sort=memory`).then(r => r.json()),
+        // fetch(`https://myspace.rhishav.com/${device}/system/processes?limit=20&sort=memory`).then(r => r.json()),
         fetch(`https://myspace.rhishav.com/${device}/system/temperature`).then(r => r.ok ? r.json() : null)
       ]);
 
@@ -66,7 +66,7 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
       setMemoryData(memory);
       setDiskData(disk);
       setNetworkData(network);
-      setProcessData(processes);
+      // setProcessData(processes);
       setTemperatureData(temperature);
     } catch (error) {
       console.error('Error fetching detailed data:', error);
@@ -77,8 +77,8 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 15000); // Update every 15 seconds
-    return () => clearInterval(interval);
+    // const interval = setInterval(fetchData, 15000); // Update every 15 seconds
+    // return () => clearInterval(interval);
   }, [device]);
 
   if (loading) {
@@ -103,7 +103,7 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
       </div>
 
       <Tabs defaultValue="cpu" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-2 h-full">
           <TabsTrigger value="cpu" className="flex items-center gap-2">
             <Cpu className="h-4 w-4" />
             CPU
