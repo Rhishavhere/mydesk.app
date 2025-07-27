@@ -86,14 +86,14 @@ export const PerformanceMetrics = ({ device }: PerformanceMetricsProps) => {
     <div className="space-y-6">
       {/* Header */}
       <Card className="glass-card p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center justify-between">
           <div className="flex items-center gap-3">
             <Activity className="h-6 w-6 text-primary" />
             <h2 className="text-xl font-semibold">Performance Metrics</h2>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 pt-2">
             <Badge variant="outline" className={performanceStatus.color}>
-              {performanceStatus.status} Performance
+              {performanceStatus.status}
             </Badge>
             <Button variant="outline" size="sm" onClick={fetchMetrics} disabled={loading}>
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
@@ -102,50 +102,10 @@ export const PerformanceMetrics = ({ device }: PerformanceMetricsProps) => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          <div className="p-4 rounded-lg bg-gradient-card border border-border/50">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Avg CPU Usage</span>
-              <TrendingUp className="h-4 w-4 text-primary" />
-            </div>
-            <div className="space-y-2">
-              <span className="text-2xl font-bold">{avgCpu.toFixed(1)}%</span>
-              <Progress value={avgCpu} className="h-2" />
-            </div>
-          </div>
-          
-          <div className="p-4 rounded-lg bg-gradient-card border border-border/50">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Avg Memory Usage</span>
-              <TrendingUp className="h-4 w-4 text-success" />
-            </div>
-            <div className="space-y-2">
-              <span className="text-2xl font-bold">{avgMemory.toFixed(1)}%</span>
-              <Progress value={avgMemory} className="h-2" />
-            </div>
-          </div>
-          
-          <div className="p-4 rounded-lg bg-gradient-card border border-border/50">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Data Points</span>
-              <Clock className="h-4 w-4 text-warning" />
-            </div>
-            <div className="space-y-1">
-              <span className="text-2xl font-bold">{metricsData?.data_points || 0}</span>
-              <p className="text-xs text-muted-foreground">
-                Last updated: {lastUpdate.toLocaleTimeString()}
-              </p>
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* CPU & Memory Chart */}
-        <Card className="glass-card p-6">
-          <h3 className="text-lg font-semibold mb-4">CPU & Memory Usage</h3>
-          <div className="h-64">
+        <div className="mt-2">
+          {/* <h3 className="text-lg font-semibold mb-4">CPU & Memory Usage</h3> */}
+          <div className="h-48 -ml-12">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -195,12 +155,54 @@ export const PerformanceMetrics = ({ device }: PerformanceMetricsProps) => {
               <span>Memory Usage</span>
             </div>
           </div>
-        </Card>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div className="p-4 rounded-lg bg-gradient-card border border-border/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-muted-foreground">Avg CPU Usage</span>
+              <TrendingUp className="h-4 w-4 text-primary" />
+            </div>
+            <div className="space-y-2">
+              <span className="text-xl font-bold">{avgCpu.toFixed(1)}%</span>
+              <Progress value={avgCpu} className="h-2" />
+            </div>
+          </div>
+          
+          <div className="p-4 rounded-lg bg-gradient-card border border-border/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-muted-foreground">Avg Memory Usage</span>
+              <TrendingUp className="h-4 w-4 text-success" />
+            </div>
+            <div className="space-y-2">
+              <span className="text-xl font-bold">{avgMemory.toFixed(1)}%</span>
+              <Progress value={avgMemory} className="h-2" />
+            </div>
+          </div>
+          
+          <div className="p-4 rounded-lg bg-gradient-card border border-border/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-muted-foreground">Data Points</span>
+              <Clock className="h-4 w-4 text-warning" />
+            </div>
+            <div className="space-y-1">
+              <span className="text-xl font-bold">{metricsData?.data_points || 0}</span>
+              <p className="text-xs text-muted-foreground">
+                Last updated: {lastUpdate.toLocaleTimeString()}
+              </p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
 
         {/* Network Activity Chart */}
         <Card className="glass-card p-6">
           <h3 className="text-lg font-semibold mb-4">Network Activity</h3>
-          <div className="h-64">
+          <div className="h-48 -ml-6">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
