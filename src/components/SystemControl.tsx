@@ -21,7 +21,7 @@ interface SystemControlProps {
 }
 
 export const SystemControl = ({ device }: SystemControlProps) => {
-  const [delay, setDelay] = useState(10);
+  const [delay, setDelay] = useState(60);
   const [authToken, setAuthToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [pendingAction, setPendingAction] = useState<string | null>(null);
@@ -167,53 +167,53 @@ export const SystemControl = ({ device }: SystemControlProps) => {
         <Shield className="h-6 w-6 text-warning" />
         <h2 className="text-xl font-semibold">System Control</h2>
         <Badge variant="outline" className="text-xs">
-          {device === 'desktop' ? 'Win11-Desktop' : 'Fedora-Laptop'}
+          {device === 'desktop' ? 'Desktop' : 'Laptop'}
         </Badge>
       </div>
 
       <Alert className="border-warning/50 bg-warning/10">
         <AlertTriangle className="h-4 w-4" />
-        <AlertDescription>
-          These controls require authentication and can affect system availability. Use with caution.
+        <AlertDescription className="text-s">
+          Authentication Required. Use with caution.
         </AlertDescription>
       </Alert>
 
-      {/* Authentication */}
-      <div className="space-y-4 p-4 rounded-lg bg-gradient-card border border-border/50">
-        <h3 className="font-semibold">Authentication</h3>
-        <div className="space-y-2">
-          <Label htmlFor="token">Control Token</Label>
-          <Input
-            id="token"
-            type="password"
-            placeholder="Enter your control token"
-            value={authToken}
-            onChange={(e) => setAuthToken(e.target.value)}
-            className="font-mono"
-          />
-          <p className="text-xs text-muted-foreground">
-            This token is required for all system control operations
-          </p>
-        </div>
-      </div>
+      <div className="flex">
 
-      {/* Delay Configuration */}
-      <div className="space-y-4 p-4 rounded-lg bg-gradient-card border border-border/50">
-        <h3 className="font-semibold">Delay Configuration</h3>
-        <div className="space-y-2">
-          <Label htmlFor="delay">Delay (seconds)</Label>
-          <Input
-            id="delay"
-            type="number"
-            min="1"
-            max="300"
-            value={delay}
-            onChange={(e) => setDelay(parseInt(e.target.value) || 10)}
-            className="font-mono"
-          />
-          <p className="text-xs text-muted-foreground">
-            Time before the system action takes effect
-          </p>
+      
+        {/* Authentication */}
+        <div className="space-y-2 p-2 rounded-lg bg-gradient-card">
+          <div className="space-y-2">
+            <Label htmlFor="token">Control Token</Label>
+            <Input
+              id="token"
+              type="password"
+              placeholder="Enter Token"
+              value={authToken}
+              onChange={(e) => setAuthToken(e.target.value)}
+              className="font-mono"
+            />
+            {/* <p className="text-xs text-muted-foreground">
+              This token is required for all system control operations
+            </p> */}
+          </div>
+        </div>
+
+        {/* Delay Configuration */}
+        <div className="space-y-2 p-2 rounded-lg bg-gradient-card">
+            <Label htmlFor="delay">Delay (s)</Label>
+            <Input
+              id="delay"
+              type="number"
+              min="1"
+              max="300"
+              value={delay}
+              onChange={(e) => setDelay(parseInt(e.target.value) || 10)}
+              className="font-mono"
+            />
+            {/* <p className="text-xs text-muted-foreground">
+              Time before the system action takes effect
+            </p> */}
         </div>
       </div>
 
@@ -229,7 +229,7 @@ export const SystemControl = ({ device }: SystemControlProps) => {
             variant="destructive"
             className="w-full h-12 justify-start gap-3"
             onClick={() => executeControlAction('shutdown')}
-            disabled={loading || !authToken.trim()}
+            // disabled={loading || !authToken.trim()}
           >
             <Power className="h-5 w-5" />
             <div className="text-left">
@@ -247,7 +247,7 @@ export const SystemControl = ({ device }: SystemControlProps) => {
             variant="outline"
             className="w-full h-12 justify-start gap-3 border-warning text-warning hover:bg-warning hover:text-warning-foreground"
             onClick={() => executeControlAction('reboot')}
-            disabled={loading || !authToken.trim()}
+            // disabled={loading || !authToken.trim()}
           >
             <RotateCcw className="h-5 w-5" />
             <div className="text-left">
@@ -265,7 +265,7 @@ export const SystemControl = ({ device }: SystemControlProps) => {
             variant="secondary"
             className="w-full h-12 justify-start gap-3"
             onClick={cancelShutdown}
-            disabled={loading || !authToken.trim()}
+            // disabled={loading || !authToken.trim()}
           >
             <X className="h-5 w-5" />
             <div className="text-left">
