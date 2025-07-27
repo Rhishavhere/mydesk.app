@@ -48,6 +48,11 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Clear previous device data immediately when device changes
+    setSystemData(null);
+    setIsOnline(false);
+    setLoading(true);
+
     const fetchSystemData = async () => {
       try {
         const response = await fetch(`https://myspace.rhishav.com/${device}/system/overview`);
@@ -56,9 +61,11 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
           setSystemData(data);
           setIsOnline(true);
         } else {
+          setSystemData(null);
           setIsOnline(false);
         }
       } catch (error) {
+        setSystemData(null);
         setIsOnline(false);
         console.error('Error fetching system data:', error);
       } finally {
@@ -117,7 +124,7 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
       </Card>
 
       {/* System Metrics */}
-      {isOnline && (
+      {isOnline && systemData ? (
         <div className="grid grid-cols-2 gap-3">
           {/* CPU Usage */}
           <Card className="glass-card p-4 touch-interactive">
@@ -218,6 +225,15 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
             </Card>
           )}
         </div>
+      ) : !loading && !isOnline && (
+        <Card className="glass-card p-6">
+          <div className="text-center py-4">
+            <Monitor className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
+            <p className="text-sm text-muted-foreground">
+              {device === 'desktop' ? 'Desktop' : 'Laptop'} is offline
+            </p>
+          </div>
+        </Card>
       )}
     </div>
   );

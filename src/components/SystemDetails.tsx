@@ -14,7 +14,8 @@ import {
   Thermometer,
   Users,
   Settings,
-  RefreshCw
+  RefreshCw,
+  Monitor
 } from "lucide-react";
 
 interface SystemDetailsProps {
@@ -49,16 +50,38 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
   const [processData, setProcessData] = useState<any>(null);
   const [temperatureData, setTemperatureData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(false);
+
+  const clearData = () => {
+    setCpuData(null);
+    setMemoryData(null);
+    setDiskData(null);
+    setNetworkData(null);
+    setProcessData(null);
+    setTemperatureData(null);
+    setIsOnline(false);
+  };
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [cpu, memory, disk, network, processes, temperature] = await Promise.all([
-        fetch(`https://myspace.rhishav.com/${device}/system/cpu`).then(r => r.json()),
-        fetch(`https://myspace.rhishav.com/${device}/system/memory`).then(r => r.json()),
-        fetch(`https://myspace.rhishav.com/${device}/system/disk`).then(r => r.json()),
-        fetch(`https://myspace.rhishav.com/${device}/system/network`).then(r => r.json()),
-        // fetch(`https://myspace.rhishav.com/${device}/system/processes?limit=20&sort=memory`).then(r => r.json()),
+      const [cpu, memory, disk, network, temperature] = await Promise.all([
+        fetch(`https://myspace.rhishav.com/${device}/system/cpu`).then(r => {
+          if (!r.ok) throw new Error(`CPU fetch failed: ${r.status}`);
+          return r.json();
+        }),
+        fetch(`https://myspace.rhishav.com/${device}/system/memory`).then(r => {
+          if (!r.ok) throw new Error(`Memory fetch failed: ${r.status}`);
+          return r.json();
+        }),
+        fetch(`https://myspace.rhishav.com/${device}/system/disk`).then(r => {
+          if (!r.ok) throw new Error(`Disk fetch failed: ${r.status}`);
+          return r.json();
+        }),
+        fetch(`https://myspace.rhishav.com/${device}/system/network`).then(r => {
+          if (!r.ok) throw new Error(`Network fetch failed: ${r.status}`);
+          return r.json();
+        }),
         fetch(`https://myspace.rhishav.com/${device}/system/temperature`).then(r => r.ok ? r.json() : null)
       ]);
 
@@ -66,19 +89,20 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
       setMemoryData(memory);
       setDiskData(disk);
       setNetworkData(network);
-      // setProcessData(processes);
       setTemperatureData(temperature);
+      setIsOnline(true);
     } catch (error) {
       console.error('Error fetching detailed data:', error);
+      clearData();
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    clearData(); // Clear previous device data immediately
+    setLoading(true);
     fetchData();
-    // const interval = setInterval(fetchData, 15000); // Update every 15 seconds
-    // return () => clearInterval(interval);
   }, [device]);
 
   if (loading) {
@@ -87,6 +111,24 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-muted rounded w-1/4"></div>
           <div className="h-96 bg-muted rounded"></div>
+        </div>
+      </Card>
+    );
+  }
+
+  if (!isOnline) {
+    return (
+      <Card className="glass-card p-6">
+        <div className="text-center py-8">
+          <Monitor className="h-12 w-12 mx-auto mb-3 text-muted-foreground opacity-50" />
+          <h3 className="text-lg font-semibold text-muted-foreground mb-2">Device Offline</h3>
+          <p className="text-sm text-muted-foreground">
+            {device === 'desktop' ? 'Desktop' : 'Laptop'} is currently offline or unreachable.
+          </p>
+          <Button variant="outline" size="sm" onClick={fetchData} className="mt-4">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Retry Connection
+          </Button>
         </div>
       </Card>
     );
