@@ -103,7 +103,7 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
           <div className="flex items-center gap-3">
             <Monitor className="h-5 w-5 text-primary" />
             <h2 className="text-fluid-xl font-semibold">
-              {device === 'desktop' ? 'Win11-Desktop' : 'Fedora-Laptop'}
+              {device === 'desktop' ? 'Desktop' : 'Laptop'}
             </h2>
           </div>
           <div className="flex items-center gap-2">
@@ -113,10 +113,11 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
             </Badge>
           </div>
         </div>
+        <p className="ml-8 text-xs font-mono">OS : {device === 'desktop' ? 'Windows-11' : 'Fedora Linux'}</p>
       </Card>
 
       {/* System Metrics */}
-      {systemData && (
+      {isOnline && (
         <div className="grid grid-cols-2 gap-3">
           {/* CPU Usage */}
           <Card className="glass-card p-4 touch-interactive">
