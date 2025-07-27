@@ -11,13 +11,13 @@ export const DeviceSelector = ({ selectedDevice, onDeviceChange }: DeviceSelecto
   const devices = [
     {
       id: 'desktop',
-      name: 'Win11-Desktop',
+      name: 'Desktop',
       icon: Monitor,
       color: 'text-primary'
     },
     {
       id: 'laptop',
-      name: 'Fedora-Laptop', 
+      name: 'Laptop', 
       icon: Laptop,
       color: 'text-accent'
     }
@@ -25,7 +25,7 @@ export const DeviceSelector = ({ selectedDevice, onDeviceChange }: DeviceSelecto
 
   return (
     <Card className="glass-card p-4 touch-interactive">
-      <h3 className="text-fluid-lg font-semibold mb-4 text-foreground">Select Device</h3>
+      {/* <h3 className="text-fluid-lg font-semibold mb-4 text-foreground">Select Device</h3> */}
       <div className="flex gap-3">
         {devices.map((device) => {
           const Icon = device.icon;
