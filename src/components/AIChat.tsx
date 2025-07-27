@@ -41,7 +41,7 @@ export const AIChat = ({ device }: AIChatProps) => {
     {
       id: '1',
       type: 'ai',
-      content: `Hello! I'm RhishDesk AI, your intelligent system administrator. I have real-time access to your ${device === 'desktop' ? 'Win11-Desktop' : 'Fedora-Laptop'} and can help you with system monitoring, performance analysis, troubleshooting, and more. What would you like to know about your system?`,
+      content: `Hello! Rhishav. It's me Pebble looking over your ${device === 'desktop' ? 'Desktop' : 'Laptop'} 😎`,
       timestamp: new Date()
     }
   ]);
@@ -137,12 +137,12 @@ export const AIChat = ({ device }: AIChatProps) => {
   };
 
   return (
-    <Card className="glass-card p-6 h-[600px] flex flex-col">
+    <Card className="glass-card p-6 h-[400px] flex flex-col">
       <div className="flex items-center gap-3 mb-4">
         <Bot className="h-6 w-6 text-primary animate-pulse" />
-        <h2 className="text-xl font-semibold">RhishDesk AI</h2>
-        <Badge variant="outline" className="text-xs">
-          {device === 'desktop' ? 'Win11-Desktop' : 'Fedora-Laptop'}
+        <h2 className="text-xl font-semibold">Pebble AI</h2>
+        <Badge variant="outline" className="text-xs ml-10">
+          {device === 'desktop' ? 'Desktop' : 'Laptop'}
         </Badge>
       </div>
 
@@ -228,26 +228,25 @@ export const AIChat = ({ device }: AIChatProps) => {
       <div className="space-y-3">
         {/* Options */}
         <div className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 border border-border/50">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 gap-2">
             <Switch
               id="screenshot"
               checked={includeScreenshot}
               onCheckedChange={setIncludeScreenshot}
             />
             <Label htmlFor="screenshot" className="text-sm flex items-center gap-1">
-              <Camera className="h-3 w-3" />
-              Include Screenshot
+              <Camera className="h-4 w-4" />
             </Label>
           </div>
           <span className="text-xs text-muted-foreground">
-            Include current screen in AI analysis
+            Include screen in AI analysis
           </span>
         </div>
 
         {/* Input */}
         <div className="flex gap-2">
           <Input
-            placeholder="Ask me about system performance, troubleshooting, or any technical questions..."
+            placeholder="Ask me"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -268,7 +267,7 @@ export const AIChat = ({ device }: AIChatProps) => {
         </div>
 
         {/* Suggestions */}
-        <div className="flex flex-wrap gap-2">
+        {/* <div className="flex flex-wrap gap-2">
           {[
             "What's my system's current performance?",
             "Why is my CPU usage high?",
@@ -286,7 +285,7 @@ export const AIChat = ({ device }: AIChatProps) => {
               {suggestion}
             </Button>
           ))}
-        </div>
+        </div> */}
       </div>
     </Card>
   );
