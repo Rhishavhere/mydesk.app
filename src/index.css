@@ -147,7 +147,7 @@
     
     --primary: 180 100% 50%;
     --primary-foreground: 210 30% 6%;
-    --primary-glow: 180 100% 60%;
+    --primary-glow: 180 100% 40%;
     --primary-soft: 180 80% 40%;
     
     --secondary: 200 90% 45%;
@@ -231,7 +231,7 @@
     border-radius: var(--radius);
     transition: var(--transition-glass);
   }
-
+  
   .glass-card:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.15);

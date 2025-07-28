@@ -36,8 +36,8 @@ const Index = () => {
                 <Zap className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="mobile-subtitle text-muted-foreground">Welcome Aboard!</p>
-                <h1 className="mobile-title text-foreground font-mono text-xl">Captain Rhishav</h1>
+                <p className="mobile-subtitle opacity-50 font-sans italic text-xs">@mydesk</p>
+                <h1 className="mobile-title text-foreground font-sans text-lg font-medium">oncloud.<span className="opacity-50">rhishav</span></h1>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -50,6 +50,13 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="flex-1 px-4 py-6 relative z-10 space-y-6 pb-safe">
+        {/* Theme Selector */}
+        <div className="animate-slide-up">
+          <ThemeSelector 
+            selectedTheme={theme} 
+            onThemeChange={setTheme} 
+          />
+        </div>
         {/* Device Selector */}
         <div className="animate-slide-up">
           <DeviceSelector 
@@ -58,19 +65,12 @@ const Index = () => {
           />
         </div>
 
-        {/* Theme Selector */}
-        <div className="animate-slide-up">
-          <ThemeSelector 
-            selectedTheme={theme} 
-            onThemeChange={setTheme} 
-          />
-        </div>
 
         {/* Mobile Navigation Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
           {/* Floating tab navigation */}
           <div className="sticky top-20 z-40 -mx-4 px-4">
-            <TabsList className="mobile-nav grid grid-cols-5 w-full h-12 p-1 rounded-2xl">
+            <TabsList className="mobile-nav grid grid-cols-5 w-full h-16 p-1 rounded-2xl bg-black/50">
               <TabsTrigger 
                 value="overview" 
                 className="flex flex-col items-center gap-1 px-1 py-2 rounded-xl text-xs touch-target"

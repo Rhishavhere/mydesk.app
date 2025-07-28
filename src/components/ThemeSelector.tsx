@@ -34,11 +34,11 @@ const themes = [
 
 export const ThemeSelector = ({ selectedTheme, onThemeChange }: ThemeSelectorProps) => {
   return (
-    <Card className="glass-card p-4">
-      <div className="flex items-center gap-2 mb-4">
+    <Card className="glass-card bg-transparent px-4 py-2">
+      {/* <div className="flex items-center gap-2 mb-4">
         <Palette className="w-5 h-5 text-primary" />
-        <h3 className="font-semibold">Theme</h3>
-      </div>
+        <p className="font-sans text-sm">Theme</p>
+      </div> */}
       <div className="grid grid-cols-3 gap-3">
         {themes.map((theme) => {
           const Icon = theme.icon;
@@ -52,14 +52,14 @@ export const ThemeSelector = ({ selectedTheme, onThemeChange }: ThemeSelectorPro
               onClick={() => onThemeChange(theme.id)}
               className={`
                 flex flex-col items-center gap-2 p-3 h-auto relative overflow-hidden
-                ${isSelected ? 'ring-2 ring-primary/50' : ''}
+                ${isSelected ? 'ring-2 ring-primary/50 bg-primary/0' : 'bg-black/50'}
               `}
             >
-              <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${theme.preview} opacity-80`} />
-              <div className="text-center">
-                <div className="font-medium text-xs">{theme.name}</div>
+              <div className={`w-8 h-4 rounded-full bg-gradient-to-r ${theme.preview} opacity-80`} />
+              {/* <div className="text-center">
+                <div className="font-normal opacity-70 text-xs">{theme.name}</div>
                 <div className="text-xs opacity-70">{theme.description}</div>
-              </div>
+              </div> */}
               {isSelected && (
                 <div className="absolute inset-0 bg-primary/10 animate-pulse" />
               )}

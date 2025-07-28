@@ -105,7 +105,7 @@ export const SystemOverview = ({ device }: SystemOverviewProps) => {
   return (
     <div className="space-y-4">
       {/* Status Header */}
-      <Card className="glass-card p-4 touch-interactive">
+      <Card className="glass-card p-4 touch-interactive bg-transparent">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Monitor className="h-5 w-5 text-primary" />

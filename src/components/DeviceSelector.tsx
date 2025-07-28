@@ -24,7 +24,7 @@ export const DeviceSelector = ({ selectedDevice, onDeviceChange }: DeviceSelecto
   ];
 
   return (
-    <Card className="glass-card p-4 touch-interactive">
+    <Card className="glass-card p-4 touch-interactive bg-transparent">
       {/* <h3 className="text-fluid-lg font-semibold mb-4 text-foreground">Select Device</h3> */}
       <div className="flex gap-3">
         {devices.map((device) => {
@@ -40,7 +40,7 @@ export const DeviceSelector = ({ selectedDevice, onDeviceChange }: DeviceSelecto
               className={`flex-1 h-16 flex flex-col gap-2 relative overflow-hidden group touch-target transition-all duration-300 ${
                 isSelected 
                   ? 'gradient-primary text-white shadow-glow border-none' 
-                  : 'glass-card hover:glass-float touch-interactive'
+                  : 'glass-card bg-black/50 hover:glass-float touch-interactive'
               }`}
             >
               <Icon className={`h-5 w-5 ${isSelected ? 'text-white' : device.color}`} />
