@@ -410,7 +410,7 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
                 <div key={sensor} className="p-4 rounded-lg bg-gradient-card border border-border/50">
                   <h3 className="font-semibold mb-3 capitalize">{sensor} Sensor</h3>
                   <div className="space-y-2">
-                    {readings.map((reading: any, index: number) => (
+                    {Array.isArray(readings) ? readings.map((reading: any, index: number) => (
                       <div key={index} className="flex items-center justify-between">
                         <span className="text-sm">{reading.label}</span>
                         <div className="flex items-center gap-2">
@@ -420,7 +420,9 @@ export const SystemDetails = ({ device }: SystemDetailsProps) => {
                           )}
                         </div>
                       </div>
-                    ))}
+                    )) : (
+                      <p className="text-sm text-muted-foreground">Sensor error: {readings}</p>
+                    )}
                   </div>
                 </div>
               ))}
