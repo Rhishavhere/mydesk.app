@@ -12,16 +12,6 @@
     --background: 240 25% 6%;
     --background-secondary: 245 30% 8%;
     --foreground: 210 40% 98%;
-    
-    /* Smooth theme transitions */
-    transition: 
-      --background 2s ease-in-out,
-      --background-secondary 2s ease-in-out,
-      --primary 2s ease-in-out,
-      --primary-glow 2s ease-in-out,
-      --secondary 2s ease-in-out,
-      --secondary-glow 2s ease-in-out,
-      --accent 2s ease-in-out;
 
     --card: 240 20% 12%;
     --card-secondary: 245 25% 10%;
@@ -124,16 +114,6 @@
     --gradient-mesh: radial-gradient(circle at 20% 80%, hsl(200 100% 60% / 0.2) 0%, transparent 50%), 
                      radial-gradient(circle at 80% 20%, hsl(280 60% 50% / 0.2) 0%, transparent 50%),
                      radial-gradient(circle at 40% 40%, hsl(320 70% 55% / 0.1) 0%, transparent 50%);
-    
-    /* Smooth transitions for all color properties */
-    transition: 
-      --background 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --background-secondary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --primary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --primary-glow 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --secondary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --secondary-glow 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --accent 2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Sunset Theme - Orange & Pink */
@@ -157,16 +137,6 @@
     --gradient-mesh: radial-gradient(circle at 20% 80%, hsl(25 95% 60% / 0.2) 0%, transparent 50%), 
                      radial-gradient(circle at 80% 20%, hsl(340 80% 55% / 0.2) 0%, transparent 50%),
                      radial-gradient(circle at 40% 40%, hsl(15 90% 50% / 0.1) 0%, transparent 50%);
-    
-    /* Smooth transitions for all color properties */
-    transition: 
-      --background 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --background-secondary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --primary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --primary-glow 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --secondary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --secondary-glow 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --accent 2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Ocean Theme - Blue & Teal */
@@ -190,16 +160,6 @@
     --gradient-mesh: radial-gradient(circle at 20% 80%, hsl(180 100% 50% / 0.2) 0%, transparent 50%), 
                      radial-gradient(circle at 80% 20%, hsl(200 90% 45% / 0.2) 0%, transparent 50%),
                      radial-gradient(circle at 40% 40%, hsl(160 80% 40% / 0.1) 0%, transparent 50%);
-    
-    /* Smooth transitions for all color properties */
-    transition: 
-      --background 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --background-secondary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --primary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --primary-glow 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --secondary 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --secondary-glow 2s cubic-bezier(0.4, 0, 0.2, 1),
-      --accent 2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 

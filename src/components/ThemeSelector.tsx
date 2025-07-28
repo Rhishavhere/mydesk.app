@@ -1,15 +1,11 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Palette, Waves, Sun, Zap, Play, Pause } from "lucide-react";
+import { Palette, Waves, Sun, Zap } from "lucide-react";
 
 interface ThemeSelectorProps {
   selectedTheme: string;
   onThemeChange: (theme: string) => void;
-  isAutomatic: boolean;
-  onAutomaticChange: (auto: boolean) => void;
 }
 
 const themes = [
@@ -36,36 +32,14 @@ const themes = [
   }
 ];
 
-export const ThemeSelector = ({ selectedTheme, onThemeChange, isAutomatic, onAutomaticChange }: ThemeSelectorProps) => {
+export const ThemeSelector = ({ selectedTheme, onThemeChange }: ThemeSelectorProps) => {
   return (
     <Card className="glass-card p-4">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Palette className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold">Theme</h3>
-        </div>
-        <div className="flex items-center gap-2">
-          <Label htmlFor="auto-theme" className="text-sm flex items-center gap-1">
-            {isAutomatic ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
-            Auto
-          </Label>
-          <Switch 
-            id="auto-theme"
-            checked={isAutomatic}
-            onCheckedChange={onAutomaticChange}
-          />
-        </div>
+      <div className="flex items-center gap-2 mb-4">
+        <Palette className="w-5 h-5 text-primary" />
+        <h3 className="font-semibold">Theme</h3>
       </div>
-      
-      {isAutomatic && (
-        <div className="mb-4 p-3 rounded-lg bg-primary/10 border border-primary/20">
-          <p className="text-xs text-center text-primary font-medium">
-            🎨 Auto-cycling through themes...
-          </p>
-        </div>
-      )}
-      
-      <div className={`grid grid-cols-3 gap-3 transition-opacity duration-500 ${isAutomatic ? 'opacity-50' : 'opacity-100'}`}>
+      <div className="grid grid-cols-3 gap-3">
         {themes.map((theme) => {
           const Icon = theme.icon;
           const isSelected = selectedTheme === theme.id;
@@ -75,8 +49,7 @@ export const ThemeSelector = ({ selectedTheme, onThemeChange, isAutomatic, onAut
               key={theme.id}
               variant={isSelected ? "default" : "outline"}
               size="sm"
-              onClick={() => !isAutomatic && onThemeChange(theme.id)}
-              disabled={isAutomatic}
+              onClick={() => onThemeChange(theme.id)}
               className={`
                 flex flex-col items-center gap-2 p-3 h-auto relative overflow-hidden
                 ${isSelected ? 'ring-2 ring-primary/50' : ''}

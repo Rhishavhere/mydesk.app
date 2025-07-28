@@ -20,7 +20,7 @@ import {
 
 const Index = () => {
   const [selectedDevice, setSelectedDevice] = useState('desktop');
-  const { theme, setTheme, isAutomatic, setIsAutomatic } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="mobile-full-height bg-gradient-background relative">
@@ -62,9 +62,7 @@ const Index = () => {
         <div className="animate-slide-up">
           <ThemeSelector 
             selectedTheme={theme} 
-            onThemeChange={setTheme}
-            isAutomatic={isAutomatic}
-            onAutomaticChange={setIsAutomatic}
+            onThemeChange={setTheme} 
           />
         </div>
 
