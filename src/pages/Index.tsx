@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeviceSelector } from "@/components/DeviceSelector";
+import { ThemeSelector } from "@/components/ThemeSelector";
+import { useTheme } from "@/hooks/useTheme";
 import { SystemOverview } from "@/components/SystemOverview";
 import { SystemDetails } from "@/components/SystemDetails";
 import { SystemControl } from "@/components/SystemControl";
@@ -18,6 +20,7 @@ import {
 
 const Index = () => {
   const [selectedDevice, setSelectedDevice] = useState('desktop');
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="mobile-full-height bg-gradient-background relative">
@@ -52,6 +55,14 @@ const Index = () => {
           <DeviceSelector 
             selectedDevice={selectedDevice} 
             onDeviceChange={setSelectedDevice} 
+          />
+        </div>
+
+        {/* Theme Selector */}
+        <div className="animate-slide-up">
+          <ThemeSelector 
+            selectedTheme={theme} 
+            onThemeChange={setTheme} 
           />
         </div>
 
