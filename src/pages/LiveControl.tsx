@@ -48,7 +48,8 @@ const LiveControl = () => {
   const navigate = useNavigate();
   const scratchpadRef = useRef<HTMLDivElement>(null);
   const lastMoveTimeRef = useRef<number>(0);
-  const pendingMoveRef = useRef<{x: number, y: number} | null>(null);
+  const accumulatedDeltaRef = useRef<{dx: number, dy: number}>({ dx: 0, dy: 0 });
+  const lastTouchRef = useRef<{x: number, y: number} | null>(null);
   const moveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // State
@@ -89,44 +90,46 @@ const LiveControl = () => {
   }, []);
 
   // Send input to API (fire and forget, no await blocking UI)
-  const sendInputAsync = useCallback((action: TouchAction, x: number, y: number) => {
+  const sendInputAsync = useCallback((action: TouchAction, x?: number, y?: number, dx?: number, dy?: number) => {
     fetch(`${API_BASE_URL}/desktop/mapping`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${CONTROL_TOKEN}`
       },
-      body: JSON.stringify({ action, x, y, normalized: true })
+      body: JSON.stringify({ action, x, y, dx, dy, normalized: true })
     }).catch(err => console.error("Failed to send input:", err));
   }, []);
 
-  // Throttled move - updates UI immediately, sends API call with throttling
-  const sendMove = useCallback((x: number, y: number) => {
+  const flushMove = useCallback(() => {
+    const { dx, dy } = accumulatedDeltaRef.current;
+    if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
+      sendInputAsync('move', undefined, undefined, dx, dy);
+      accumulatedDeltaRef.current = { dx: 0, dy: 0 };
+      lastMoveTimeRef.current = Date.now();
+    }
+    moveTimeoutRef.current = null;
+  }, [sendInputAsync]);
+
+  // Throttled move - accumulates deltas
+  const sendMove = useCallback((dx: number, dy: number) => {
+    // Accumulate
+    accumulatedDeltaRef.current.dx += dx;
+    accumulatedDeltaRef.current.dy += dy;
+
     const now = Date.now();
     const timeSinceLastMove = now - lastMoveTimeRef.current;
-    
-    if (timeSinceLastMove >= MOVE_THROTTLE_MS) {
-      // Enough time passed, send immediately
-      lastMoveTimeRef.current = now;
-      sendInputAsync('move', x, y);
-      setLastAction('move');
-    } else {
-      // Store pending move for later
-      pendingMoveRef.current = { x, y };
-      
-      // Schedule sending if not already scheduled
-      if (!moveTimeoutRef.current) {
-        moveTimeoutRef.current = setTimeout(() => {
-          if (pendingMoveRef.current) {
-            sendInputAsync('move', pendingMoveRef.current.x, pendingMoveRef.current.y);
-            pendingMoveRef.current = null;
-            lastMoveTimeRef.current = Date.now();
-          }
-          moveTimeoutRef.current = null;
-        }, MOVE_THROTTLE_MS - timeSinceLastMove);
+
+    if (!moveTimeoutRef.current) {
+      if (timeSinceLastMove >= MOVE_THROTTLE_MS) {
+        // Send immediately
+        flushMove();
+      } else {
+        // Schedule
+        moveTimeoutRef.current = setTimeout(flushMove, MOVE_THROTTLE_MS - timeSinceLastMove);
       }
     }
-  }, [sendInputAsync]);
+  }, [flushMove]);
 
   // Get normalized position from touch/mouse event
   const getPosition = useCallback((e: React.TouchEvent | React.MouseEvent) => {
@@ -151,46 +154,59 @@ const LiveControl = () => {
     return { x, y };
   }, []);
 
-  // Touch/Mouse event handlers - smooth UI, throttled API
+  // Touch/Mouse event handlers - relative movement
   const handleMoveStart = useCallback((e: React.TouchEvent | React.MouseEvent) => {
     const pos = getPosition(e);
-    setCursorPosition(pos); // Immediate UI update
-    sendMove(pos.x, pos.y); // Throttled API call
-  }, [getPosition, sendMove]);
+    setCursorPosition(pos); // Visual feedback only
+    lastTouchRef.current = pos;
+  }, [getPosition]);
 
   const handleMove = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    const pos = getPosition(e);
-    setCursorPosition(pos); // Immediate UI update - always smooth
-    sendMove(pos.x, pos.y); // Throttled API call
+    const pos = getPosition(e); // Normalized 0-1
+    setCursorPosition(pos); // Visual feedback
+    
+    if (lastTouchRef.current) {
+      const dx = pos.x - lastTouchRef.current.x;
+      const dy = pos.y - lastTouchRef.current.y;
+      
+      // Only send if moved significantly (optional threshold, but floating point diff is fine)
+      if (dx !== 0 || dy !== 0) {
+        sendMove(dx, dy);
+        setLastAction('move');
+      }
+    }
+    lastTouchRef.current = pos;
   }, [getPosition, sendMove]);
 
   const handleMoveEnd = useCallback(() => {
-    // Send final position if there's a pending move
-    if (pendingMoveRef.current) {
-      sendInputAsync('move', pendingMoveRef.current.x, pendingMoveRef.current.y);
-      pendingMoveRef.current = null;
-    }
+    lastTouchRef.current = null;
+    // Ensure any remaining deltas are sent
     if (moveTimeoutRef.current) {
-      clearTimeout(moveTimeoutRef.current);
-      moveTimeoutRef.current = null;
+        // We let the timeout finish naturally to preserve throttle rhythm,
+        // or we could flush immediately.
+        // Let's flush immediately for responsiveness on lift.
+        clearTimeout(moveTimeoutRef.current);
+        flushMove();
+    } else {
+        flushMove();
     }
+  }, [flushMove]);
+
+  // Click handlers - use current cursor position (undefined x,y)
+  const handleLeftClick = useCallback(() => {
+    sendInputAsync('tap');
+    setLastAction('tap');
   }, [sendInputAsync]);
 
-  // Click handlers - use current cursor position
-  const handleLeftClick = useCallback(() => {
-    sendInputAsync('tap', cursorPosition.x, cursorPosition.y);
-    setLastAction('tap');
-  }, [sendInputAsync, cursorPosition]);
-
   const handleDoubleClick = useCallback(() => {
-    sendInputAsync('doubletap', cursorPosition.x, cursorPosition.y);
+    sendInputAsync('doubletap');
     setLastAction('doubletap');
-  }, [sendInputAsync, cursorPosition]);
+  }, [sendInputAsync]);
 
   const handleRightClick = useCallback(() => {
-    sendInputAsync('rightclick', cursorPosition.x, cursorPosition.y);
+    sendInputAsync('rightclick');
     setLastAction('rightclick');
-  }, [sendInputAsync, cursorPosition]);
+  }, [sendInputAsync]);
 
   // Toggle fullscreen
   const toggleFullscreen = () => {
