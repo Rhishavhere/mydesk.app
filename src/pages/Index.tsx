@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeviceSelector } from "@/components/DeviceSelector";
 import { ThemeSelector } from "@/components/ThemeSelector";
@@ -15,10 +16,12 @@ import {
   MessageSquare, 
   Activity,
   Zap,
-  Wifi
+  Wifi,
+  Tv2
 } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [selectedDevice, setSelectedDevice] = useState('desktop');
   const { theme, setTheme } = useTheme();
 
@@ -40,9 +43,18 @@ const Index = () => {
                 <h1 className="mobile-title text-foreground font-sans text-lg font-medium">oncloud.<span className="opacity-50">rhishav</span></h1>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full status-online"></div>
-              <Wifi className="h-4 w-4 text-success" />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/live-control')}
+                className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all touch-interactive"
+                title="Live Control"
+              >
+                <Tv2 className="h-4 w-4 text-primary" />
+              </button>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full status-online"></div>
+                <Wifi className="h-4 w-4 text-success" />
+              </div>
             </div>
           </div>
         </div>
