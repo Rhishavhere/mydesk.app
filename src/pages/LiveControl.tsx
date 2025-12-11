@@ -61,9 +61,9 @@ const LiveControl = () => {
   
   // Stream settings
   const [fps, setFps] = useState(15);
-  const [quality, setQuality] = useState(70);
-  const [scale, setScale] = useState(0.5);
-  const [cursorStyle, setCursorStyle] = useState<'crosshair' | 'simple' | 'none'>('crosshair');
+  const [quality, setQuality] = useState(30);
+  const [scale, setScale] = useState(0.4);
+  const [cursorStyle, setCursorStyle] = useState<'crosshair' | 'simple' | 'none'>('simple');
 
   // Fetch stream info on mount
   useEffect(() => {
@@ -411,16 +411,17 @@ const LiveControl = () => {
             </div>
           )}
           
-          {/* Stream overlay info */}
-          <div className="absolute top-2 right-2 flex items-center gap-2">
-            <div className="px-2 py-1 rounded-md bg-black/60 text-[10px] font-mono">
-              {fps}fps • {quality}% • {Math.round(scale * 100)}%
-            </div>
+        </div>
+
+        {/* Stream overlay info */}
+        <div className="flex items-center justify-center gap-2 w-full mt-2">
+          <div className="px-2 py-1 rounded-md bg-black/60 text-[10px] font-mono">
+           FPS: {fps} • Quality: {quality}% • Scale: {Math.round(scale * 100)}%
           </div>
         </div>
 
         {/* Scratchpad / Touchpad - MOVEMENT ONLY, SMOOTH UI */}
-        <div className="flex-1 p-4 pb-2">
+        <div className="flex-1 p-2 px-4 pb-2">
           <div 
             ref={scratchpadRef}
             className="w-full h-full min-h-[160px] rounded-2xl glass-card relative overflow-hidden cursor-crosshair touch-none select-none"
