@@ -1,4 +1,4 @@
-# 🔮 myDesk - Cloud Management App
+# myDesk - Cloud Management App
 
 Built with a modern, cross-platform stack.
 
